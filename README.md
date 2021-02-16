@@ -1,5 +1,5 @@
 # FrankaPanda_Unity
-Unity implementation of the Franka Panda platform, using impedance joint drivers 
+Unity implementation of the Franka Panda platform, using impedance joint drivers; 
 Initial Unity Package provided by Nicole E Carey
 
 Requirements: Works with Unity 2020.1 or above. Note that force sensing on joints is not (yet) enabled, though this functionality exists in PhysX and may be exposed in Unity in the future.

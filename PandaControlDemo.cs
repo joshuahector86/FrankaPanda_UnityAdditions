@@ -108,7 +108,7 @@ public class PandaControlDemo : MonoBehaviour
     }
 
 
-    // Update is called once per frame, the actual control loop!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Update is called once per frame
     void FixedUpdate()
     {
         // Use FixedUpdate (fixed time step simulation) for anything involving real physics
@@ -181,7 +181,7 @@ public class PandaControlDemo : MonoBehaviour
         else if (ForwardKinematicControl) 
         {
             //Drive each joint of the robot to a specified angle
-            //add the same stiffness and damping lines here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            //add the same stiffness and damping lines her
             //can lower velocity as well 
             //PD.velocity
             //Move the robot to a safe position here.
@@ -386,13 +386,6 @@ public class PandaControlDemo : MonoBehaviour
             }
         }
 
-
-
-
-
-
-
-
         //Data writing code for joint 2 only
         float data_three = torque_expected[1];
         float data_four = torque_real[1];
@@ -406,183 +399,5 @@ public class PandaControlDemo : MonoBehaviour
         dataWriter.Write(" , ");
         dataWriter.Write(T_error);
         dataWriter.WriteLine(" , ");
-
-        // Debug.Log(torque_expected[1]);
-        // Debug.Log(torque_real[1]);
-
-        //Pull out each joint individually to get torques of just them
-        /*
-        Debug.Log(torque_expected[0] - torque_real[0]);
-        Debug.Log(torque_expected[1] - torque_real[1]);
-        Debug.Log(torque_expected[2] - torque_real[2]);
-        Debug.Log(torque_expected[3] - torque_real[3]);
-        Debug.Log(torque_expected[4] - torque_real[4]);
-        Debug.Log(torque_expected[5] - torque_real[5]);
-        Debug.Log(torque_expected[6] - torque_real[6]);
-        */
-
-
-
-
-
-
-        //Create Lists to hold the time steps, torque_expected and torque_real (Do the torques one joint at a time)
-        //This is done so that these lists can be put into seperate files to be pulled into MATLAB to plot data
-
-        //timestep List
-        //List<float> timestep = new List<float>();
-        //timestep.Add(Time.time);
-
-
-
-        //torque_expected Lists
-        /*
-      
-        List<float> torque_expected_export_0 = new List<float>();
-        torque_expected_export_0.Add(torque_expected[0]);
-       
-        List<float> torque_expected_export_1 = new List<float>();
-        torque_expected_export_1.Add(torque_expected[1]);
-        
-        List<float> torque_expected_export_2 = new List<float>();
-        torque_expected_export_2.Add(torque_expected[2]);
-        
-        List<float> torque_expected_export_3 = new List<float>();
-        torque_expected_export_3.Add(torque_expected[3]);
-      
-        List<float> torque_expected_export_4 = new List<float>();
-        torque_expected_export_4.Add(torque_expected[4]);
-       
-        List<float> torque_expected_export_5 = new List<float>();
-        torque_expected_export_5.Add(torque_expected[5]);
-       
-        List<float> torque_expected_export_6 = new List<float>();
-        torque_expected_export_6.Add(torque_expected[6]);
-
-
-        //torque_real Lists
-        
-        List<float> torque_real_export_0 = new List<float>();
-        torque_real_export_0.Add(torque_real[0]);
-        
-        List<float> torque_real_export_1 = new List<float>();
-        torque_real_export_1.Add(torque_real[1]);
-      
-        List<float> torque_real_export_2 = new List<float>();
-        torque_real_export_2.Add(torque_real[2]);
-        
-        List<float> torque_real_export_3 = new List<float>();
-        torque_real_export_3.Add(torque_real[3]);
-       
-        List<float> torque_real_export_4 = new List<float>();
-        torque_real_export_4.Add(torque_real[4]);
-       
-        List<float> torque_real_export_5 = new List<float>();
-        torque_real_export_5.Add(torque_real[5]);
-       
-        List<float> torque_real_export_6 = new List<float>();
-        torque_real_export_6.Add(torque_real[6]);
-
-        */
-
-        //Print Statements to Check if the Lists are being created properly
-        //Debug.Log(timestep);
-
-
-
-        /*
-        foreach (float tor in torque_expected_export_1)
-        {
-            Debug.Log(tor);
-        }
-        */
-
-        //Print Statements to see on console
-        //Debug.Log(torque_expected);
-        //Debug.Log(torque_real);
-
-
-        //float data_one = torque_expected[0];
-        //float data_two = torque_real[0];
-
-        //float data_three = torque_expected[1];
-        //float data_four = torque_real[1];
-
-        //float data_five = torque_expected[2];
-        //float data_six = torque_real[2];
-
-        //float data_seven = torque_expected[3];
-        //float data_eight = torque_real[3];
-
-        //float data_nine = torque_expected[4];
-        //float data_ten = torque_real[4];
-
-        //float data_eleven = torque_expected[5];
-        //float data_twelve = torque_real[5];
-
-        //float data_thirteen = torque_expected[6];
-        //float data_fourteen = torque_real[6];
-
-
-        //Error Calculations of no more than 5% using .05*torque_expected
-
-        //float T_error = .05f * torque_expected[1];
-        //float T_error4 = .05f * torque_expected[3];
-        //float T_error6 = .05f * torque_expected[5];
-
-
-        //commented out dataWriters are for the joints that do not move in our system
-        //Always leave the time column alone as it is always relevant
-        //joint data is recorded as [Time, torque_expected, torrque_real, torque expected error pos, torque expected error neg]
-        //dataWriter.Write(Time.realtimeSinceStartup);
-        //dataWriter.Write(" s, ");
-
-        //dataWriter.Write(data_one);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_two);
-        //dataWriter.Write(" , ");
-
-        //Joint 2 
-        //dataWriter.Write(data_three);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_four);
-        //dataWriter.Write(" , ");
-        //dataWriter.Write(T_error);
-        //dataWriter.Write(" , ");
-
-
-        //dataWriter.Write(data_five);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_six);
-        //dataWriter.Write(" , ");
-
-        //joint 4
-        //dataWriter.Write(data_seven);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_eight);
-        //dataWriter.Write(" , ");
-        //dataWriter.Write(T_error4);
-        //dataWriter.Write(" , ");
-
-        //dataWriter.Write(data_nine);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_ten);
-        //dataWriter.Write(" , ");
-
-        //joint 6
-        //dataWriter.Write(data_eleven);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_twelve);
-        //dataWriter.Write(" , ");
-        //dataWriter.Write(T_error6);
-        //dataWriter.Write(" , ");
-
-        //dataWriter.Write(" , ");
-        //dataWriter.Write(data_thirteen);
-        //dataWriter.Write(" , ");
-        //dataWriter.WriteLine(data_fourteen);
-
-        // WriteLine ends this data row
-
     }
 }

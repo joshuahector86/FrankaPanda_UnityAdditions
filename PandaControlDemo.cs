@@ -72,9 +72,10 @@ public class PandaControlDemo : MonoBehaviour
 
         PD.q_goal_state = Vector<float>.Build.DenseOfVector(PD.q_initial);
 
-        // If you change the values in PD.q_initial or PD.q_goal_state, it is a good idea to make sure they don't violate
-        // the maximum/minimum joint angles. The subroutine JointLimitConstraints in the FastIterSolve class will ensure the goal joint positions
-        // do not violate the joint constraints, eg:
+        /* If you change the values in PD.q_initial or PD.q_goal_state, it is a good idea to make sure they don't violate
+         * the maximum/minimum joint angles. The subroutine JointLimitConstraints in the FastIterSolve class will ensure the goal joint positions
+         * do not violate the joint constraints, eg:
+         */
         PD.IKSolver.JointLimitConstraints(PD.Articulation, PD.q_initial).CopyTo(PD.q_goal_state);
 
         // Initialise the variables for our three kinds of controller
@@ -180,11 +181,12 @@ public class PandaControlDemo : MonoBehaviour
 
         else if (ForwardKinematicControl) 
         {
-            //Drive each joint of the robot to a specified angle
-            //add the same stiffness and damping lines her
-            //can lower velocity as well 
-            //PD.velocity
-            //Move the robot to a safe position here.
+            /* Drive each joint of the robot to a specified angle
+             * add the same stiffness and damping lines her
+             * can lower velocity as well 
+             * PD.velocity
+             * Move the robot to a safe position here.
+             */
             if (!FKControlInitialised)
             {
                 FKJointPositions.CopyTo(PD.q_goal_state);
@@ -225,15 +227,15 @@ public class PandaControlDemo : MonoBehaviour
 
             if (!TorqueControlInitialised)
             {
-                // initialise the torque control structures
+                /* initialise the torque control structures
 
-                // Note that the torque control depends heavily on the joint acceleration. Because the joints are
-                // impedance controlled (and hence quite 'springy'), this can be a noisy value. I have implemented a low-pass filter
-                // on the acceleration to ensure smoother behaviour.
-
-                // First, call the joint dynamic updater. This will initialise the dynamic parameters - mass and dynamic inertia matrices,
-                // coriolis forces, etc.
-
+                * Note that the torque control depends heavily on the joint acceleration. Because the joints are
+                * impedance controlled (and hence quite 'springy'), this can be a noisy value. I have implemented a low-pass filter
+                * on the acceleration to ensure smoother behaviour.
+                *
+                * First, call the joint dynamic updater. This will initialise the dynamic parameters - mass and dynamic inertia matrices,
+                * coriolis forces, etc.
+                */
                 PD.UpdateJointDynamics();
 
                 // Initialise the low-pass acceleration filter:
@@ -247,15 +249,8 @@ public class PandaControlDemo : MonoBehaviour
                 TC_stiffness = Vector<float>.Build.Dense(PD.Articulation.numberJoints, 800.0f);
                 TC_damping = Vector<float>.Build.Dense(PD.Articulation.numberJoints, 40.0f);
 
-                //commented out to stop the updating 
                 PD.UpdateJointStiffness(TC_stiffness);
                 PD.UpdateJointDamping(TC_damping);
-
-              
-
-
-                
-
 
                 TorqueControlInitialised = true;
 
@@ -320,31 +315,19 @@ public class PandaControlDemo : MonoBehaviour
             List<float> jointForces_return = new List<float>(dof_robot);
 
             PD.Articulation.segments[2].linkedBody.GetJointForces(jointForces_return);
-            // foreach (float force in jointForces_return)
-
-
-
-           
-           
+            // foreach (float force in jointForces_return)              
         }
-
-      
+        
         //New variable torque_expected to hold all of the torques we are getting here
         //calculate torque using the different components
         int i = 0;
        
         Vector<float> torque_expected = Vector<float>.Build.Dense(PD.Articulation.GetNbrJoints());
         Vector<float> torque_real = Vector<float>.Build.Dense(PD.Articulation.GetNbrJoints());
-        //error check for 
-       // Vector<float> check_error_swtich = torque_expected - 
-
         
-        //Go through each segment to get the joints
+        //Go through each segment to get the individual joints
         foreach (Segment seg in PD.Articulation.segments)
-        {
-            
-
-
+        {           
             if (seg.joint.jointType == ArticulationJointType.RevoluteJoint)
             {
 
@@ -353,29 +336,27 @@ public class PandaControlDemo : MonoBehaviour
                 float jointStiffness = controlDrive.stiffness;
                 float jointDamping = controlDrive.damping;
 
-                //Calculate torque for both real and expected. Change expected by some factoring in order to show a difference between the two for plot puposes
-                //To add noise for the purpose of testing, alter torque_real
-                //- Maybe in matlab Add sino amplitude(degrees here- example 45)*sine(omega - oscilation freq* time)
-                //incorporate a difference in jointstiffness and damping - do it in a percentage - just make sure this is going to change - proves attack on hardware
+                /* Calculate torque for both real and expected. Change expected by some factoring in order to show a difference between the two for plot puposes
+                 * To add noise for the purpose of testing, alter torque_real
+                 * Maybe in matlab Add sino amplitude(degrees here- example 45)*sine(omega - oscilation freq* time)
+                 * incorporate a difference in jointstiffness and damping - do it in a percentage - just make sure this is going to change - proves attack on hardware
+                */
+                
                 torque_expected[i] = jointStiffness * ((seg.linkedBody.jointPosition[0] - targetPosition) * 3.14f / 360f) + jointDamping * (seg.linkedBody.jointVelocity[0] * 3.14f / 360f);
                 torque_real[i] = jointStiffness * ((seg.linkedBody.jointPosition[0] - .90f*targetPosition) * 3.14f / 360f) + jointDamping * (seg.linkedBody.jointVelocity[0] * 3.14f / 360f);
                 i++;
 
-                //Comparison real and expected
+                //Comparison of real and expected torques
                 foreach (float jointError in ((torque_real - torque_expected) / torque_expected))
                 {
-                    //Error addjustment here, Ideally looking for some number that torque_expected-torque_real should not go past
+                    //Error addjustment here
                     if (Math.Abs(jointError) > .05)
                     {
                         //When the robot is falling outside of the expected range of motion, switch to torque mode so that we can make the motion of
                         //the robot to the expected torque 
                         //jointTorqueErrorCheck = true;
 
-                        Debug.Log("A security check is needed. Unexpected Motion has occured.");          
-                        //Debug.Log("real torque is " + torque_real + " but we expect " + torque_expected);
-                        //Debug.Break();
-
-
+                        Debug.Log("A security check is needed. Unexpected Motion has occured.");                                
                     }
                     else
                     {

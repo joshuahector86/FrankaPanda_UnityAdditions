@@ -5,4 +5,4 @@ Requirements: Works with Unity 2020.1 or above. Note that force sensing on joint
 Linkage lengths, masses, inertias match the real Panda body as closely as possible. Due to convex mesh limitations, the robot collision envelope is slightly larger than the visualisation mesh.
 
 As of February 12, 2021
-Additions to the Panda Robot scripts by Joshua Hector (Dimitri) are in the FrankaPanda_UnityAdditions branch
+Additions to the Panda Robot scripts by Joshua Hector (Dimitri) are in the FrankaPanda_UnityAdditions branch. This branch includes the demo script that contains the security features being introduced into the simulated robot environment.
